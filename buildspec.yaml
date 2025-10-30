@@ -2,10 +2,9 @@ version: 0.2
 
 env:
   variables:
-    AWS_ACCOUNT_ID: "549383241648"           # Your AWS Account ID
-    AWS_REGION: "us-east-1"                  # Your AWS Region (e.g., us-east-1)
-    IMAGE_REPO_NAME: "coworking-analytics-repository"  # Correct name of your ECR repository
-    CODEBUILD_BUILD_NUMBER: "$CODEBUILD_BUILD_NUMBER"  # Automatically set by CodeBuild
+    AWS_ACCOUNT_ID: "549383241648"
+    AWS_REGION: "us-east-1"
+    IMAGE_REPO_NAME: "coworking-analytics-repository"
 
 phases:
   pre_build:
