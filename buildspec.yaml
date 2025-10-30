@@ -24,10 +24,10 @@ phases:
       - docker tag $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER
       - echo "Docker build and tagging complete."
 
-  post_build:
+   post_build:
     commands:
       - echo "Pushing Docker image to ECR..."
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER
+      - docker push 549383241648.dkr.ecr.us-east-1.amazonaws.com/coworking-analytics-repository:$CODEBUILD_BUILD_NUMBER
       - echo "Docker push complete."
 
 artifacts:
