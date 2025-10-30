@@ -15,17 +15,20 @@ phases:
       - export AWS_REGION=us-east-1             # Your AWS Region
       - echo "Logging in to Amazon ECR..."
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo "Login complete, continuing with build."
 
   build:
     commands:
       - echo "Building Docker image..."
-      - docker build --no-cache -t $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER .
+      - docker build --no-cache -t $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER ./analytics
       - docker tag $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER
+      - echo "Docker build and tagging complete."
 
   post_build:
     commands:
       - echo "Pushing Docker image to ECR..."
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER
+      - echo "Docker push complete."
 
 artifacts:
   files:
