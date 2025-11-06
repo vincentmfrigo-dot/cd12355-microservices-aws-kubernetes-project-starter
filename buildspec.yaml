@@ -10,7 +10,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPOSITORY_URI
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 343722280420.dkr.ecr.us-east-1.amazonaws.com/coworking-analytics-repo
       - echo Pre-build complete.
 
   build:
