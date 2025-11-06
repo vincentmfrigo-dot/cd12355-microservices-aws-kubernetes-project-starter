@@ -2,28 +2,29 @@ version: 0.2
 
 env:
   variables:
-    DOCKER_IMAGE_NAME: coworking-analytics
-    ECR_REPOSITORY_URI: 343722280420.dkr.ecr.us-east-1.amazonaws.com/coworking-analytics-repo
+    ECR_REPOSITORY_URI: "343722280420.dkr.ecr.us-east-1.amazonaws.com/coworking-analytics-repo"
+    IMAGE_NAME: "coworking-analytics"
+    IMAGE_TAG: "1"
+    DOCKERFILE_PATH: "./analytics"
 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPOSITORY_URI
-      - echo "Logged in successfully"
+      - echo Starting build...
+
   build:
     commands:
-      - echo Building the Docker image...
-      - docker build -t $DOCKER_IMAGE_NAME ./analytics
-      - echo Tagging the Docker image with build number $CODEBUILD_BUILD_NUMBER...
-      - docker tag $DOCKER_IMAGE_NAME:latest $ECR_REPOSITORY_URI:$CODEBUILD_BUILD_NUMBER
-      - docker tag $DOCKER_IMAGE_NAME:latest $ECR_REPOSITORY_URI:latest
+      - echo Building Docker image...
+      - docker build -t $IMAGE_NAME $DOCKERFILE_PATH
+      - docker tag $IMAGE_NAME:latest $ECR_REPOSITORY_URI:$IMAGE_TAG
+
   post_build:
     commands:
-      - echo Pushing Docker image to Amazon ECR...
-      - docker push $ECR_REPOSITORY_URI:$CODEBUILD_BUILD_NUMBER
-      - docker push $ECR_REPOSITORY_URI:latest
-      - echo "Docker image pushed successfully"
+      - echo Pushing Docker image to ECR...
+      - docker push $ECR_REPOSITORY_URI:$IMAGE_TAG
+      - echo Build and push complete.
 
 artifacts:
   files:
